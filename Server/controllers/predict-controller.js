@@ -1,40 +1,39 @@
 const { model } = require("mongoose");
 const pred_model = require("../models/prediction-model");
-const { PythonShell } = require("python-shell");
+const { execFile } = require("child_process");
 
 const predictForm = async (req, res) => {
     try {
-        const dataToPredict = req.body;
-        delete dataToPredict.Name;
+        const predictData = req.body;
+        delete predictData.Name;
 
-        const modelPrediction = async (data) => {
-            const options = {
-                mode: "text",
-                scriptPath: "./ML_model",
-                args: JSON.stringify(data),
-            };
-            return new Promise((resolve, reject) => {
-                PythonShell.run("deployment_g63.py", options).then((results) => {
-                    try {
-                        const prediction = JSON.parse(results[0].replace(/'/g, '"'));
-                        resolve(prediction);
-                    } catch (error) {
-                        console.log("Error in parsing the data", error);
-                        reject(error);
-                    }
-                }).catch((err) => {
-                    console.log("Error in executing the Python script: ", err);
-                    reject(err);
-                });
-            });
-        };
+        const exePath = "./deployment_g63/deployment_g63.exe";
+        const pyProcess = execFile(exePath,[JSON.stringify(predictData)]);
+        
+        let result = "";
+        let err="";
 
-        const prediction = await modelPrediction(dataToPredict);
-        res.json({prediction });
+        pyProcess.stdout.on('data',(data)=>{
+            result+=data.toString();
+        });
+        
+        pyProcess.stderr.on('data',(data)=>{
+            err+=data.toString();
+        });
+        
+        pyProcess.on('close',(code)=>{
+            if(code==0){
+                //console.log({result: JSON.parse(result)});
+                res.status(200).json({result: JSON.parse(result)});
+            }else{
+                console.log(err);
+            }
+        });
+
 
     } catch (error) {
-        console.log("Error:",error);
-        res.status(500).json({ error});
+        console.log("Error in predict route",error);
+        res.status(500).json({ error: "Internal Server Error" });
         return;
     }
 };
