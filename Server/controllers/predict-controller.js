@@ -14,10 +14,12 @@ const predictForm = async (req, res) => {
         let err="";
 
         pyProcess.stdout.on('data',(data)=>{
+            console.log("STDOUT");
             result+=data.toString();
         });
         
         pyProcess.stderr.on('data',(data)=>{
+            console.error('Error data:', data.toString());
             err+=data.toString();
         });
         
