@@ -14,7 +14,7 @@ const predictForm = async (req, res) => {
         let err="";
 
         pyProcess.stdout.on('data',(data)=>{
-            console.log("STDOUT");
+            console.log("STDOUT..");
             result+=data.toString();
         });
         
