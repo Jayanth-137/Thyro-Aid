@@ -30,7 +30,7 @@ const predictForm = async (req, res) => {
                 res.status(200).json({result: JSON.parse(result)});
             }else{
                 res.status(400).json({error:err});
-                console.log(err);
+                console.log("Error:",err);
             }
         });
 
