@@ -25,7 +25,7 @@ const predictForm = async (req, res) => {
         
         pyProcess.on('close',(code)=>{
             if(code==0){
-                consoe.log("Check point");
+                console.log("Check point");
                 console.log({result: JSON.parse(result)});
                 res.status(200).json({result: JSON.parse(result)});
             }else{
