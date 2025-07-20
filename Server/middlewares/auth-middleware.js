@@ -10,7 +10,7 @@ const authMiddleware = async (req, res, next)=>{
     const jwtToken = token.replace("Bearer","").trim();
     
     try {
-        const isVerified = jwt.verify(jwtToken,process.env.JWT_KEY);
+        const isVerified = jwt.verify(jwtToken,process.env.JWT_KEY,{ algorithms: ['HS256'] });
         console.log(isVerified);
         const userData = await User.findOne({_id:isVerified.userId});
 
