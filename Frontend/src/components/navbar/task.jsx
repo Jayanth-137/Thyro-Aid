@@ -30,6 +30,9 @@ export default function AccountMenu(props) {
     if (text === "Reset password" ){
       navigate("/resetPassword");
     }
+    if(text==="History"){
+      navigate("/history");
+    }
     // <Resetpass />
     // <Link to="/login" className="none">Login</Link>
   };
