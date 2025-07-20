@@ -9,21 +9,20 @@ import Profile from "./profile/profile";
 import Navbar2 from  "./navbar/navlink2";
 import ThyroidTestForm from "./test/test";
 import ResetPassword from "./resetPassword/resetpassword";
+import Report from "./outputPage/output";
+import History from "./History/history";
 import {
     BrowserRouter as Router,
     Route,
     Routes
     } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 
 function App(){
     const [setNav,handleNav] = useState(false);
     // handleNav(setNav);
     let kk = "";
-    function changeToken(){
-        kk = localStorage.getItem('token');
-    }
-    console.log()
     kk = localStorage.getItem('token');
     // console.log(kk);
     // console.log(jwtDecode(kk));
@@ -44,10 +43,13 @@ function App(){
             <Route path="/profile" element={<Profile/>} />
             <Route path="/form" element={<Form />} /> 
             <Route path="/resetPassword" element={<ResetPassword />} />
-            <Route path ="/test" element = {<ThyroidTestForm />} />   
+            <Route path ="/test" element = {<ThyroidTestForm />} />  
+            <Route path ="/outputPage" element = {<Report />} /> 
+            <Route path ="/history" element = {<History />} /> 
             <Route path="/" element={<Home />} />
             
             </Routes>
+            <div><ToastContainer autoClose={3000} limit={1}/></div>
         </Router>
         
         
