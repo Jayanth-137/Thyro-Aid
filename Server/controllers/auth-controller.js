@@ -82,4 +82,17 @@ const user = async (req, res)=>{
     }
 }
 
-module.exports = { home, register, login, user };
+//Prediction History Logic
+const pred = require("../models/pred-model");
+const history = async (req,res)=>{
+    try {
+        const Id = req.userId;
+        const query = await pred.find({userId:Id});
+        res.status(200).json(query);
+    } catch (error) {
+        console.log("Error in prediction history",error);
+        res.status(500).json({msg:"Error while fetching details"});
+    }
+}
+
+module.exports = { home, register, login, user, history };
